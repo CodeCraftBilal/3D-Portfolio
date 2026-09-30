@@ -1,5 +1,11 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
+assets
+logs
+
+.tmp/
+test-results/
+playwright-report/
 # dependencies
 /node_modules
 /.pnp
@@ -28,10 +34,12 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+debug.log
 .pnpm-debug.log*
 
 # env files (can opt-in for committing if needed)
 .env*
+!.env.example
 
 # vercel
 .vercel
