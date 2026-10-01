@@ -881,7 +881,7 @@ a svg {
   right: clamp(360px, 33vw, 480px);
 }
 .is-inspecting .scene-controls {
-  right: calc(clamp(360px, 33vw, 480px) + 16px);
+  right: calc(clamp(360px, 33vw, 480px) + 36px);
 }
 .is-inspecting .room-stage-top,
 .is-inspecting .room-annotation {
@@ -889,10 +889,10 @@ a svg {
 }
 .section-panel {
   position: fixed;
-  inset: 16px 3.25% 118px auto;
+  inset: 8px 2.25% 105px auto;
   height: auto;
   max-height: none;
-  width: clamp(360px, 33vw, 480px);
+  width: clamp(360px, 38vw, 480px);
   max-width: none;
   margin: 0;
   padding: 0;
