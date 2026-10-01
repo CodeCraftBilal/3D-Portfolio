@@ -46,7 +46,7 @@ export const projects: Project[] = [
       "AI/ML",
     ],
     color: "sage",
-    image: "/projects/EcoStudent.jfif",
+    image: "/projects/EcoStudent.jpg",
     sourceUrl: "https://github.com/CodeCraftBilal/EcoStudent",
   },
   {
@@ -69,7 +69,7 @@ export const projects: Project[] = [
       "Cloud Storage",
     ],
     color: "blue",
-    image: "/projects/SecureShare.jfif",
+    image: "/projects/SecureShare.jpg",
     sourceUrl: "https://github.com/CodeCraftBilal/info-security-project",
   },
   {
@@ -92,7 +92,7 @@ export const projects: Project[] = [
       "AI / LLM APIs",
     ],
     color: "peach",
-    image: "/projects/NexaPlan.jfif",
+    image: "/projects/NexaPlan.jpg",
     sourceUrl: "https://github.com/CodeCraftBilal/NexaPlan",
   },
 ];
