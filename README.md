@@ -19,6 +19,7 @@ npm run lint
 npm run format:check
 npm run test:e2e     # Desktop and mobile Chromium tests
 npm run test:timer   # Timer compatibility regression test
+npm run test:contact # Contact route tests with mocked Resend responses
 ```
 
 Install a browser once for tests if needed: `npx playwright install chromium`. The test configuration starts the dev server automatically or uses an existing server on port 3000.
@@ -72,7 +73,9 @@ Update **`content/portfolio.ts`**. The 3D scene does not contain résumé copy o
 
 EcoStudent, SecureShare, and NexaPlan use the supplied banners in `public/projects/` in both the room panel and classic view. Next.js optimizes the images for each viewport; their complete aspect ratio is preserved. The concept illustration is only a fallback for future projects without an `image`. Repository links come from the résumé; no live project URLs have been invented.
 
-The contact form composes a `mailto:` draft in the visitor’s email application. It does not send or store messages on a backend. Email, telephone, and social links also work directly.
+The contact form posts to `app/api/contact/route.ts`, which sends through Resend. Copy `.env.example` to `.env.local`, set `RESEND_API_KEY`, choose a verified-domain sender in `RESEND_FROM_EMAIL`, and set the receiving inbox in `CONTACT_TO_EMAIL`. Set the same variables on your deployment host and restart the local server after changing them. These values stay on the server. The visitor's email is used only as Reply-To; the recipient is fixed by configuration. The route validates and bounds requests and includes a hidden honeypot field; it does not persist messages in an application database. For public deployments, configure rate limiting through your hosting provider as the honeypot is not a distributed rate limiter. Email, telephone, and social links still work directly.
+
+The résumé content follows `public/resume/M-Bilal-Khan-Resume.pdf`, including its in-progress BSCS status and July–September 2026 Viberay Tech experience. The original PDF viewer supports clickable annotations, selectable text, zoom buttons, keyboard +/−/0, Ctrl/⌘-wheel zoom, mobile pinch zoom, and fit-to-width. Its PDF.js worker is bundled locally, and the classic view defers PDF rendering until visible. Direct PDF opening and downloading remain available if the embedded preview fails.
 
 ## Room interactions
 

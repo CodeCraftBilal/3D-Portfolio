@@ -9,9 +9,10 @@ export default function Home() {
     name: profile.name,
     jobTitle: profile.role,
     description: profile.bio,
+    url: profile.website,
     sameAs: [profile.github, profile.linkedin],
     email: profile.email,
-    alumniOf: {
+    affiliation: {
       "@type": "CollegeOrUniversity",
       name: "University of Mianwali",
     },
@@ -19,7 +20,8 @@ export default function Home() {
       "React Native",
       "TypeScript",
       "Next.js",
-      "Kotlin",
+      "NestJS",
+      "PostgreSQL",
       "Full-stack Development",
     ],
   };

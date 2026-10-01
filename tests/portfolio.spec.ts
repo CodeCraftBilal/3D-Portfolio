@@ -127,7 +127,7 @@ test("supplied project banners load in the room panel and classic view", async (
       await banner.scrollIntoViewIfNeeded();
       await expect(banner).toHaveAttribute(
         "src",
-        new RegExp(`${project}\\.jfif`),
+        new RegExp(`${project}\\.jpg`),
       );
       await expect
         .poll(() =>
@@ -180,13 +180,30 @@ test("object markers, project links, details, and Escape work", async ({
   await page.getByRole("button", { name: "Reset room view" }).click();
 });
 
-test("résumé is a real PDF and contact form composes an email", async ({
+test("résumé is a real PDF and contact form sends and retries safely", async ({
   page,
   request,
 }) => {
   const pdf = await request.get("/resume/M-Bilal-Khan-Resume.pdf");
   expect(pdf.ok()).toBeTruthy();
   expect((await pdf.body()).subarray(0, 5).toString()).toBe("%PDF-");
+  let attempts = 0;
+  await page.route("**/api/contact", async (route) => {
+    attempts += 1;
+    expect(route.request().postDataJSON()).toEqual({
+      name: "Alex Example",
+      email: "alex@example.com",
+      message: "I would like to discuss a mobile application project.",
+      website: "",
+    });
+    await route.fulfill({
+      status: attempts === 1 ? 502 : 200,
+      json:
+        attempts === 1
+          ? { error: "Your message could not be sent. Please try again." }
+          : { message: "Thanks! Your message has been sent." },
+    });
+  });
   await page.goto("/");
   await page.getByRole("button", { name: "Open Contact", exact: true }).click();
   const dialog = page.getByRole("dialog");
@@ -203,9 +220,18 @@ test("résumé is a real PDF and contact form composes an email", async ({
   await dialog
     .getByRole("button", { name: "Let’s start a conversation" })
     .click();
+  await expect(dialog.getByRole("alert")).toContainText("Please try again");
+  await expect(dialog.getByLabel("Your name")).toHaveValue("Alex Example");
+  await dialog
+    .getByRole("button", { name: "Let’s start a conversation" })
+    .click();
   await expect(
-    dialog.getByRole("status").filter({ hasText: "Your email draft is ready" }),
+    dialog
+      .getByRole("status")
+      .filter({ hasText: "Your message has been sent" }),
   ).toBeVisible();
+  await expect(dialog.getByLabel("Your name")).toHaveValue("");
+  expect(attempts).toBe(2);
 });
 
 test("classic view is complete and does not overflow the viewport", async ({

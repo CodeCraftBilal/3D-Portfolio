@@ -1,12 +1,12 @@
 import type { Project } from "@/lib/types";
 
-// All personal content is transcribed or summarized from assets/M. Bilal_Khan_Resume.pdf.
+// Content is transcribed or summarized from public/resume/M-Bilal-Khan-Resume.pdf.
 // Add screenshots and live URLs here when available; no room code needs to change.
 export const profile = {
   name: "M. Bilal Khan",
   shortName: "Bilal",
   initials: "BK",
-  role: "React Native & Full-stack Developer",
+  role: "Full Stack Developer",
   location: "Mianwali, Pakistan",
   timezone: "Asia/Karachi",
   email: "bilalkhan751150@gmail.com",
@@ -14,13 +14,17 @@ export const profile = {
   github: "https://github.com/CodeCraftBilal",
   linkedin: "https://www.linkedin.com/in/bilalkhan75/",
   resume: "/resume/M-Bilal-Khan-Resume.pdf",
+  website: "https://bilalkhan.online",
+  educationStatus: "Computer Science student",
+  cgpa: "3.31",
+  cgpaScale: "4.0",
   intro:
     "I build thoughtful web and mobile experiences. Come on in, explore my workspace, and get to know the developer behind the screen.",
-  bio: "I’m Bilal, a Computer Science graduate and developer based in Pakistan. I work across React Native, TypeScript, and native Android with Kotlin, bringing ideas to life through reliable, easy-to-use applications.",
+  bio: "I’m Bilal, a Full Stack Developer and BS Computer Science student based in Pakistan. I build responsive, secure, and scalable web applications with React, Next.js, Node.js, NestJS, TypeScript, PostgreSQL, and MongoDB.",
   approach:
-    "From real-time marketplaces to encrypted file sharing, I enjoy connecting a considered interface with a solid backend. My work brings together REST APIs, authentication, database design, and the small details that make an application feel right.",
+    "From user interfaces to backend architecture, I enjoy solving problems independently and delivering complete products. My work brings together REST APIs, real-time features, database design, testing, performance optimization, cloud deployment, Docker, and CI/CD workflows.",
   current:
-    "At Viberacy Tech, I’m building an Android document-reader app, working on reusable screens, local file handling, and native document-to-PDF integration.",
+    "I’m developing EcoStudent, a capstone marketplace with AI recommendations, real-time messaging, and PostgreSQL, as part of a three-member team at the University of Mianwali.",
 };
 
 export const projects: Project[] = [
@@ -82,6 +86,7 @@ export const projects: Project[] = [
       "Role-based access for workspace owners, managers, members, viewers, and administrators.",
       "Task assignment, priorities, deadlines, comments, activity tracking, and project dashboards.",
       "AI-assisted planning, task generation, workload organization, and project summaries.",
+      "Scalable database models and APIs for users, workspaces, projects, roles, permissions, and tasks.",
     ],
     technologies: [
       "Next.js",
@@ -108,9 +113,8 @@ export const skillGroups = [
       "TypeScript",
       "JavaScript / ES6+",
       "Tailwind CSS",
-      "Kotlin",
-      "React Navigation",
-      "React Context",
+      "HTML",
+      "CSS",
     ],
   },
   {
@@ -126,6 +130,7 @@ export const skillGroups = [
       "REST APIs",
       "Socket.IO",
       "Authentication & Authorization",
+      "Python",
     ],
   },
   {
@@ -140,21 +145,27 @@ export const skillGroups = [
       "API Development",
       "Database Design",
       "Debugging",
+      "Docker",
+      "CI/CD Pipelines",
+      "VS Code",
+      "Testing",
+      "Performance Optimization",
+      "Cloud Deployment",
     ],
   },
 ];
 
 export const experience = [
   {
-    role: "React Native Developer",
-    company: "Viberacy Tech",
-    period: "Jul 2026 — Present",
+    role: "Full Stack React Native App Developer",
+    company: "Viberay Tech",
+    period: "Jul — Sep 2026",
     location: "Bahria Town, Rawalpindi, Pakistan",
     details: [
-      "Developing React Native screens and reusable components for an Android document-reader app.",
-      "Working on native Kotlin document-to-PDF integration, PDF layout, and Android build-size analysis.",
-      "Implementing navigation, themes, and file actions, and debugging permissions and modal interactions.",
-      "Building RESTful APIs and collaborating through Git branches, code integration, and issue resolution.",
+      "Developed and maintained responsive, user-friendly applications using React Native, React, TypeScript, and Node.js.",
+      "Built and integrated RESTful APIs, server-side logic, and database-backed application features.",
+      "Collaborated with designers and developers to translate product requirements into maintainable features.",
+      "Debugged, tested, documented, and optimized applications across development and deployment workflows.",
     ],
   },
 ];
@@ -162,20 +173,21 @@ export const experience = [
 export const education = [
   {
     institution: "University of Mianwali",
-    degree: "BS Computer Science",
+    degree: "Bachelor of Science in Computer Science (BSCS)",
     period: "2022 — 2026",
-    detail: "Graduated with Honors · GPA 3.31 / 4.0",
+    detail:
+      "In progress · Current CGPA 3.31 / 4.0 · EcoStudent capstone in a three-member team",
   },
   {
-    institution: "Superior Group of Colleges",
+    institution: "Superior Group of College",
     degree: "FSc Pre-Engineering",
-    period: "2020 — Jan 2022",
+    period: "2020 — 2022",
     detail: "Mianwali · Top 10% in a cohort of 200 students",
   },
 ];
 
 export const achievements = [
-  "Top 10 finish in national coding competitions.",
-  "Led a mobile app team, improving user engagement by 30%.",
-  "Completed an AI algorithms capstone project, earning top accolades.",
+  "Achieved a top 10% ranking in a cohort of 200 students at Superior Group of College.",
+  "Completed advanced coursework in calculus and physics with distinction.",
+  "Participated in national science fairs, showcasing innovative engineering designs.",
 ];

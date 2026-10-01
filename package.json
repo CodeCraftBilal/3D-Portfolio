@@ -5,6 +5,7 @@
   "scripts": {
     "postinstall": "patch-package --error-on-fail",
     "test:timer": "node --test tests/timer-compat.test.mjs",
+    "test:contact": "node --experimental-strip-types --test tests/contact-route.test.mjs",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
@@ -24,8 +25,11 @@
     "lucide-react": "^1.49.0",
     "next": "^16.3.7",
     "patch-package": "^8.0.1",
+    "pdfjs-dist": "^6.3.289",
     "react": "^19.3.0",
     "react-dom": "^19.3.0",
+    "react-pdf": "^11.0.0",
+    "resend": "^6.31.0",
     "three": "^0.186.1",
     "zustand": "^5.0.15"
   },

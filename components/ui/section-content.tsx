@@ -2,17 +2,19 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import dynamic from "next/dynamic";
+
+const PdfViewer = dynamic(() => import("./pdf-viewer"), { ssr: false });
+
 import {
   ArrowDownToLine,
   ArrowUpRight,
   Check,
-  CheckCheck,
   Copy,
   GraduationCap,
   Mail,
   MapPin,
   Phone,
-  Send,
   Trophy,
 } from "lucide-react";
 import { Github, Linkedin } from "./brand-icons";
@@ -26,6 +28,7 @@ import {
 } from "@/content/portfolio";
 import type { Project, SectionId } from "@/lib/types";
 import { ProjectArt } from "./project-art";
+import { ContactForm } from "./contact-form";
 
 export function ProjectCard({ project }: { project: Project }) {
   return (
@@ -141,13 +144,14 @@ function AboutContent() {
       <div className="about-facts">
         <div>
           <strong>BSCS</strong>
-          <span>Computer Science graduate</span>
+          <span>{profile.educationStatus}</span>
         </div>
         <div>
           <strong>
-            3.31<span>/4.0</span>
+            {profile.cgpa}
+            <span>/{profile.cgpaScale}</span>
           </strong>
-          <span>Graduated with Honors</span>
+          <span>Current CGPA · In progress</span>
         </div>
       </div>
       <div className="text-links">
@@ -243,29 +247,7 @@ function ResumeContent() {
     <div className="resume-content">
       <p className="lead-copy">The full picture, in two pages.</p>
       <div className="resume-preview">
-        <div className="resume-paper">
-          <span className="eyebrow">DEVELOPER · BUILDER · PROBLEM SOLVER</span>
-          <h3>M. BILAL KHAN</h3>
-          <p>React Native Developer</p>
-          <span className="resume-rule" />
-          <span className="eyebrow">EXPERIENCE</span>
-          <strong>Viberacy Tech</strong>
-          <span>React Native Developer · Jul 2026 — Present</span>
-          <div className="resume-lines">
-            <i />
-            <i />
-            <i />
-          </div>
-          <span className="eyebrow">EDUCATION</span>
-          <strong>University of Mianwali</strong>
-          <span>BS Computer Science · 2022 — 2026</span>
-          <div className="resume-lines">
-            <i />
-            <i />
-          </div>
-          <span className="eyebrow">SELECTED WORK</span>
-          <span>EcoStudent · SecureShare · NexaPlan</span>
-        </div>
+        <PdfViewer file={profile.resume} />
         <span className="resume-file-label">
           M-Bilal-Khan-Resume.pdf <span>PDF</span>
         </span>
@@ -289,7 +271,6 @@ function ResumeContent() {
 function ContactContent() {
   const [copied, setCopied] = useState(false);
   const [copyError, setCopyError] = useState(false);
-  const [draftReady, setDraftReady] = useState(false);
   async function copyEmail() {
     try {
       await navigator.clipboard.writeText(profile.email);
@@ -299,14 +280,7 @@ function ContactContent() {
       setCopyError(true);
     }
   }
-  function sendMessage(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    const values = new FormData(event.currentTarget);
-    const subject = `Portfolio hello from ${String(values.get("name")).trim()}`;
-    const body = `${String(values.get("message")).trim()}\n\nFrom: ${String(values.get("name")).trim()}\nEmail: ${String(values.get("email")).trim()}`;
-    window.location.href = `mailto:${profile.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-    setDraftReady(true);
-  }
+
   return (
     <div className="contact-content">
       <p className="lead-copy">
@@ -339,54 +313,7 @@ function ContactContent() {
           Please select and copy the email address above.
         </p>
       )}
-      <form className="contact-form" onSubmit={sendMessage}>
-        <div className="form-row">
-          <label>
-            Your name
-            <input
-              name="name"
-              placeholder="Alex Johnson"
-              autoComplete="name"
-              required
-              maxLength={100}
-            />
-          </label>
-          <label>
-            Email address
-            <input
-              name="email"
-              type="email"
-              placeholder="alex@example.com"
-              autoComplete="email"
-              required
-              maxLength={254}
-            />
-          </label>
-        </div>
-        <label>
-          What’s on your mind?
-          <textarea
-            name="message"
-            placeholder="A little about your idea…"
-            required
-            minLength={10}
-            maxLength={3000}
-            rows={4}
-          />
-        </label>
-        <button type="submit" className="primary-button full-width">
-          Let’s start a conversation <Send size={16} />
-        </button>
-        <p className="small-note">
-          Opens your email app with a draft. You review and send it.
-        </p>
-        {draftReady && (
-          <p className="form-status" role="status">
-            <CheckCheck size={17} /> Your email draft is ready. If your email
-            app didn’t open, use the email link above.
-          </p>
-        )}
-      </form>
+      <ContactForm />
       <div className="contact-socials">
         <a href={profile.github} target="_blank" rel="noopener noreferrer">
           <Github size={18} />
