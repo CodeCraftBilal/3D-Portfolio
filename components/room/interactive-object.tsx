@@ -32,9 +32,9 @@ export function InteractiveObject({
   useEffect(() => {
     if (!group.current) return;
     const tween = gsap.to(group.current.scale, {
-      x: hovered ? 1.025 : 1,
-      y: hovered ? 1.025 : 1,
-      z: hovered ? 1.025 : 1,
+      x: hovered ? 1.05 : 1,
+      y: hovered ? 1.05 : 1,
+      z: hovered ? 1.05 : 1,
       duration: reducedMotion ? 0 : 0.3,
       onUpdate: invalidate,
     });
