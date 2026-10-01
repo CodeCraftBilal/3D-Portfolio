@@ -88,7 +88,7 @@ The contact form composes a `mailto:` draft in the visitor’s email application
 
 Drag to orbit within the room’s viewing bounds. Select an object, its HTML marker, or a navigation button to focus it. **Escape** or **Back to the room** closes the panel; **0** resets the camera. The sun button changes lighting. The help button explains the controls.
 
-Information panels are nonmodal: the room stays interactive, clicking its background keeps the information visible, and selecting another object switches the panel directly. The camera gently adjusts while keeping the room in view; dragging takes control immediately. On phones, the room and information share the screen vertically.
+Information panels are nonmodal: the room stays interactive, clicking its background keeps the information visible, and selecting another object switches the panel directly. The header and footer hide while a section is open to give its content more space, and return when the section closes. The bottom navigation stays visible, including on phones. The camera gently adjusts while keeping the room in view; dragging takes control immediately. On phones, the room and information share the screen vertically.
 
 ## Replace or regenerate the models
 

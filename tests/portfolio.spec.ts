@@ -40,13 +40,16 @@ test("room loads and every section opens with working back navigation", async ({
 
 test("information stays open while orbiting and switching room objects", async ({
   page,
-  isMobile,
 }) => {
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.goto("/");
   await expect(page.locator(".room-loading")).toHaveCount(0);
   await page.getByRole("button", { name: "Open About", exact: true }).click();
   const panel = page.getByRole("dialog");
+  await expect(page.locator(".site-header")).not.toBeVisible();
+  await expect(
+    page.getByRole("navigation", { name: "Explore the room" }),
+  ).toBeInViewport({ ratio: 1 });
   await expect(panel).toHaveAttribute("aria-modal", "false");
   await expect(page.locator("dialog:modal")).toHaveCount(0);
   await page
@@ -86,14 +89,12 @@ test("information stays open while orbiting and switching room objects", async (
   await expect(
     panel.getByRole("heading", { name: "My everyday toolkit." }),
   ).toBeVisible();
-  if (!isMobile) {
-    await page.getByRole("button", { name: "Open About", exact: true }).click();
-    await expect(
-      panel.getByRole("heading", { name: "A little about me." }),
-    ).toBeVisible();
-  }
+  await page.getByRole("button", { name: "Open About", exact: true }).click();
+  await expect(
+    panel.getByRole("heading", { name: "A little about me." }),
+  ).toBeVisible();
   await page
-    .getByRole("button", { name: "Selected work 03", exact: true })
+    .getByRole("button", { name: "Open Projects", exact: true })
     .click();
   await expect(
     panel.getByRole("heading", { name: "Built with intention." }),
@@ -104,6 +105,7 @@ test("information stays open while orbiting and switching room objects", async (
   ).toBeVisible();
   await page.keyboard.press("Escape");
   await expect(panel).not.toBeVisible();
+  await expect(page.locator(".site-header")).toBeVisible();
 });
 
 test("supplied project banners load in the room panel and classic view", async ({
