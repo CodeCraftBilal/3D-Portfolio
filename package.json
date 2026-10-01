@@ -5,6 +5,7 @@
   "scripts": {
     "postinstall": "patch-package --error-on-fail",
     "test:timer": "node --test tests/timer-compat.test.mjs",
+    "test:contact": "node --experimental-strip-types --test tests/contact-route.test.mjs",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
