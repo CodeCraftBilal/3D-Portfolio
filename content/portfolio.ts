@@ -74,6 +74,7 @@ export const projects: Project[] = [
     ],
     color: "blue",
     image: "/projects/SecureShare.jpg",
+     liveUrl: "https://secureshare.bilalkhan.online",
     sourceUrl: "https://github.com/CodeCraftBilal/info-security-project",
   },
   {

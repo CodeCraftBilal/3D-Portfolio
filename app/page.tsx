@@ -17,12 +17,12 @@ export default function Home() {
       name: "University of Mianwali",
     },
     knowsAbout: [
-      "React Native",
+      "Full-stack Development",
       "TypeScript",
       "Next.js",
       "NestJS",
       "PostgreSQL",
-      "Full-stack Development",
+      "React Native",
     ],
   };
   return (
