@@ -52,11 +52,14 @@ export function RoomHotspots() {
     <div
       className="room-hotspots"
       role="group"
-      hidden={Boolean(selected)}
       aria-label="Interactive room objects"
     >
       <div id="hotspot-coffee" className="hotspot-position" aria-hidden="true">
-        <span className="coffee-steam"><i /><i /><i /></span>
+        <span className="coffee-steam">
+          <i />
+          <i />
+          <i />
+        </span>
       </div>
       {labels.map(({ section, label }) => (
         <div
@@ -65,7 +68,8 @@ export function RoomHotspots() {
           key={section}
         >
           <button
-            className={`room-marker marker-${section} ${hovered === section ? "is-hovered" : ""}`}
+            className={`room-marker marker-${section} ${hovered === section ? "is-hovered" : ""} ${selected === section ? "is-selected" : ""}`}
+            aria-pressed={selected === section}
             onClick={() => open(section)}
             onPointerEnter={() => hover(section)}
             onPointerLeave={() => hover(null)}

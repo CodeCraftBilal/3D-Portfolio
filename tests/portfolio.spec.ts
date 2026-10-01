@@ -6,6 +6,10 @@ test("room loads and every section opens with working back navigation", async ({
 }) => {
   const errors: string[] = [];
   page.on("pageerror", (error) => errors.push(error.message));
+  page.on("console", (message) => {
+    if (/THREE\.Clock|PCFSoftShadowMap/.test(message.text()))
+      errors.push(message.text());
+  });
   await page.goto("/");
   await expect(
     page.getByRole("heading", { name: /A little space/ }),
@@ -32,6 +36,113 @@ test("room loads and every section opens with working back navigation", async ({
     await expect(page.getByRole("dialog")).not.toBeVisible();
   }
   expect(errors).toEqual([]);
+});
+
+test("information stays open while orbiting and switching room objects", async ({
+  page,
+  isMobile,
+}) => {
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.goto("/");
+  await expect(page.locator(".room-loading")).toHaveCount(0);
+  await page.getByRole("button", { name: "Open About", exact: true }).click();
+  const panel = page.getByRole("dialog");
+  await expect(panel).toHaveAttribute("aria-modal", "false");
+  await expect(page.locator("dialog:modal")).toHaveCount(0);
+  await page
+    .getByRole("button", { name: "Switch to evening lighting" })
+    .click();
+  await expect(page.locator(".portfolio-app")).toHaveAttribute(
+    "data-theme",
+    "night",
+  );
+  await expect(panel).toBeVisible();
+
+  const canvas = page.locator("canvas");
+  await canvas.click({ position: { x: 12, y: 24 } });
+  await expect(panel).toBeVisible();
+  const marker = page.locator("#hotspot-journey");
+  const beforeDrag = await marker.getAttribute("style");
+  const bounds = await canvas.boundingBox();
+  if (!bounds) throw new Error("The room canvas has no bounds");
+  await page.mouse.move(bounds.x + 12, bounds.y + 24);
+  await page.mouse.down();
+  await page.mouse.move(bounds.x + 100, bounds.y + 45, { steps: 16 });
+  await page.mouse.up();
+  await expect.poll(() => marker.getAttribute("style")).not.toBe(beforeDrag);
+  await expect(
+    panel.getByRole("heading", { name: "A little about me." }),
+  ).toBeVisible();
+
+  await page
+    .getByRole("button", { name: "Explore My projects", exact: true })
+    .click();
+  await expect(
+    panel.getByRole("heading", { name: "Built with intention." }),
+  ).toBeVisible();
+  await page
+    .getByRole("button", { name: "Explore My toolkit", exact: true })
+    .click();
+  await expect(
+    panel.getByRole("heading", { name: "My everyday toolkit." }),
+  ).toBeVisible();
+  if (!isMobile) {
+    await page.getByRole("button", { name: "Open About", exact: true }).click();
+    await expect(
+      panel.getByRole("heading", { name: "A little about me." }),
+    ).toBeVisible();
+  }
+  await page
+    .getByRole("button", { name: "Selected work 03", exact: true })
+    .click();
+  await expect(
+    panel.getByRole("heading", { name: "Built with intention." }),
+  ).toBeVisible();
+  await page.keyboard.press("4");
+  await expect(
+    panel.getByRole("heading", { name: "The journey so far." }),
+  ).toBeVisible();
+  await page.keyboard.press("Escape");
+  await expect(panel).not.toBeVisible();
+});
+
+test("supplied project banners load in the room panel and classic view", async ({
+  page,
+}) => {
+  await page.goto("/");
+  await page
+    .getByRole("button", { name: "Open Projects", exact: true })
+    .click();
+  for (const view of [
+    page.getByRole("dialog"),
+    page.locator(".classic-portfolio"),
+  ]) {
+    for (const project of ["EcoStudent", "SecureShare", "NexaPlan"]) {
+      const banner = view.getByRole("img", {
+        name: `${project} project banner`,
+        exact: true,
+      });
+      await banner.scrollIntoViewIfNeeded();
+      await expect(banner).toHaveAttribute(
+        "src",
+        new RegExp(`${project}\\.jfif`),
+      );
+      await expect
+        .poll(() =>
+          banner.evaluate(
+            (element) => (element as HTMLImageElement).naturalWidth,
+          ),
+        )
+        .toBeGreaterThan(0);
+    }
+    await expect(view.locator(".project-art")).toHaveCount(0);
+    if (await page.getByRole("dialog").isVisible()) {
+      await page.keyboard.press("Escape");
+      await page
+        .getByRole("button", { name: "Prefer a classic view?" })
+        .click();
+    }
+  }
 });
 
 test("object markers, project links, details, and Escape work", async ({

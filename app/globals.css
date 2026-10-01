@@ -667,6 +667,24 @@ a svg {
   border-color: #435739;
   transform: translateY(-2px);
 }
+.room-marker.is-selected {
+  background: #435739;
+  color: #f5f8eb;
+  border-color: #435739;
+}
+.room-marker.is-selected .marker-dot {
+  background: #d8e5b5;
+}
+.room-marker.is-selected .marker-label > span {
+  color: #d8e5b5;
+}
+.is-inspecting .navigation-intro,
+.is-inspecting .navigation-end {
+  display: none;
+}
+.is-inspecting .room-navigation-wrap {
+  justify-content: center;
+}
 .room-marker:hover .marker-dot,
 .room-marker.is-hovered .marker-dot {
   background: #d8e5b5;
@@ -692,11 +710,42 @@ a svg {
 .social-object:hover {
   outline: 2px solid #b9c6a6;
 }
-.coffee-steam { position: absolute; left: -8px; bottom: 2px; display: flex; gap: 3px; pointer-events: none; }
-.coffee-steam i { width: 5px; height: 17px; border-left: 1px solid #fdfcf5; border-radius: 50%; opacity: 0; animation: steam-rise 3.8s ease-out infinite; }
-.coffee-steam i:nth-child(2) { animation-delay: .7s; height: 20px; }
-.coffee-steam i:nth-child(3) { animation-delay: 1.4s; }
-@keyframes steam-rise { 0% { opacity: 0; transform: translateY(3px); } 30% { opacity: .45; } 100% { opacity: 0; transform: translateY(-15px) rotate(12deg); } }
+.coffee-steam {
+  position: absolute;
+  left: -8px;
+  bottom: 2px;
+  display: flex;
+  gap: 3px;
+  pointer-events: none;
+}
+.coffee-steam i {
+  width: 5px;
+  height: 17px;
+  border-left: 1px solid #fdfcf5;
+  border-radius: 50%;
+  opacity: 0;
+  animation: steam-rise 3.8s ease-out infinite;
+}
+.coffee-steam i:nth-child(2) {
+  animation-delay: 0.7s;
+  height: 20px;
+}
+.coffee-steam i:nth-child(3) {
+  animation-delay: 1.4s;
+}
+@keyframes steam-rise {
+  0% {
+    opacity: 0;
+    transform: translateY(3px);
+  }
+  30% {
+    opacity: 0.45;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-15px) rotate(12deg);
+  }
+}
 .room-hotspots {
   position: absolute;
   inset: 0;
@@ -816,8 +865,11 @@ a svg {
   pointer-events: none;
 }
 .is-inspecting .room-stage {
-  left: -10%;
-  right: 31%;
+  left: -2%;
+  right: clamp(360px, 33vw, 480px);
+}
+.is-inspecting .scene-controls {
+  right: calc(clamp(360px, 33vw, 480px) + 16px);
 }
 .is-inspecting .room-stage-top,
 .is-inspecting .room-annotation {
@@ -825,10 +877,10 @@ a svg {
 }
 .section-panel {
   position: fixed;
-  inset: 16px 16px 16px auto;
-  height: calc(100dvh - 32px);
+  inset: 80px 3.25% 192px auto;
+  height: 480px;
   max-height: none;
-  width: min(480px, calc(100vw - 32px));
+  width: clamp(360px, 33vw, 480px);
   max-width: none;
   margin: 0;
   padding: 0;
@@ -838,6 +890,7 @@ a svg {
   border-radius: 13px;
   box-shadow: -10px 15px 70px #25351e14;
   overflow: hidden;
+  z-index: 30;
 }
 .section-panel[open] {
   display: flex;
@@ -847,10 +900,6 @@ a svg {
 dialog::backdrop {
   background: #26302118;
   backdrop-filter: blur(2px);
-}
-.section-panel::backdrop {
-  backdrop-filter: none;
-  background: #2630210c;
 }
 @keyframes panel-in {
   from {
@@ -1192,12 +1241,12 @@ kbd {
 }
 .project-screenshot {
   width: 100%;
-  aspect-ratio: 1.8;
+  aspect-ratio: 2400 / 1792;
   position: relative;
   background: #e6eadc;
 }
 .project-screenshot img {
-  object-fit: cover;
+  object-fit: contain;
 }
 .project-art {
   height: 200px;
@@ -2418,12 +2467,36 @@ kbd {
   .is-inspecting .room-stage {
     left: auto;
     right: auto;
+    height: 100%;
+    margin: 0 -8%;
+    flex: 1;
+  }
+  .is-inspecting .room-layout {
+    height: calc(50dvh - 76px);
+    min-height: 0;
+  }
+  .is-inspecting .hero-copy,
+  .is-inspecting .room-bottom-note {
+    display: none;
+  }
+  .is-inspecting .scene-controls {
+    left: auto;
+    right: 0;
+    bottom: 4px;
+    transform: none;
+  }
+  .is-inspecting .site-footer,
+  .is-inspecting .room-navigation-wrap {
+    display: none;
+  }
+  .is-inspecting {
+    min-height: 100dvh;
   }
   .section-panel {
     width: calc(100vw - 16px);
     max-width: none;
     inset: auto 8px 8px;
-    height: calc(100dvh - 24px);
+    height: calc(50dvh - 12px);
     max-height: 900px;
     border-radius: 12px;
   }
@@ -2673,6 +2746,26 @@ kbd {
   .contact-form input,
   .contact-form textarea {
     font-size: 16px;
+  }
+}
+@media (min-width: 601px) and (max-width: 1100px) {
+  .section-panel {
+    top: 101px;
+    bottom: 186px;
+    right: 4%;
+    width: 360px;
+  }
+}
+@media (min-width: 601px) and (max-width: 800px) {
+  .section-panel {
+    top: 94px;
+    width: 330px;
+  }
+  .is-inspecting .room-stage {
+    right: 330px;
+  }
+  .is-inspecting .scene-controls {
+    right: 346px;
   }
 }
 @media (prefers-reduced-motion: reduce) {

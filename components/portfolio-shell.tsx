@@ -134,13 +134,14 @@ export function PortfolioShell({ children }: { children: ReactNode }) {
   useEffect(() => {
     const onKey = (event: KeyboardEvent) => {
       if (
+        event.defaultPrevented ||
         event.ctrlKey ||
         event.metaKey ||
         event.altKey ||
         (event.target instanceof HTMLElement &&
           (event.target.isContentEditable ||
             ["INPUT", "TEXTAREA", "SELECT"].includes(event.target.tagName))) ||
-        document.querySelector("dialog[open]")
+        document.querySelector("dialog:modal")
       )
         return;
       if (event.key === "0" || event.key === "Escape") reset();
@@ -210,7 +211,7 @@ export function PortfolioShell({ children }: { children: ReactNode }) {
       </header>
       <main id="main-content">
         <div className="room-layout" hidden={mode !== "room"}>
-          <div className="hero-copy">
+          <div className="hero-copy" inert={Boolean(section)}>
             <div className="hello-line">
               <span className="small-line" /> HELLO, WORLD. I’M BILAL.
             </div>

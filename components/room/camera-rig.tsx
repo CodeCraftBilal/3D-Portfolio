@@ -11,6 +11,7 @@ import { useRoomStore } from "@/store/room-store";
 export function CameraRig() {
   const controls = useRef<OrbitControlsImpl>(null);
   const entered = useRef(false);
+  const transition = useRef<gsap.core.Timeline | null>(null);
   const { camera, invalidate, size } = useThree();
   const section = useRoomStore((s) => s.section);
   const resetCount = useRoomStore((s) => s.resetCount);
@@ -20,25 +21,34 @@ export function CameraRig() {
   useEffect(() => {
     const orbit = controls.current;
     if (!orbit) return;
-    const view = section ? cameraViews[section] : overview;
-    const distance = mobile && !section ? 1.2 : 1;
+    // A gentle focus preserves the rest of the room as a usable navigation surface.
+    const focus = section ? cameraViews[section] : overview;
+    const blend = section ? 0.16 : 0;
+    const view = {
+      position: overview.position.map(
+        (value, i) => value + (focus.position[i] - value) * blend,
+      ),
+      target: overview.target.map(
+        (value, i) => value + (focus.target[i] - value) * blend,
+      ),
+    };
+    const distance = mobile ? 1.2 : 1;
     const [x, y, z] = view.position;
     if (!entered.current) {
       camera.position.set(x * 1.24, y * 1.2, z * 1.24);
       orbit.target.set(...overview.target);
       entered.current = true;
     }
-    orbit.enabled = false;
     const timeline = gsap.timeline({
       onUpdate: () => {
         orbit.update();
         invalidate();
       },
       onComplete: () => {
-        orbit.enabled = !section;
         invalidate();
       },
     });
+    transition.current = timeline;
     timeline.to(
       camera.position,
       {
@@ -70,7 +80,7 @@ export function CameraRig() {
     <OrbitControls
       ref={controls}
       makeDefault
-      enabled={!section}
+      onStart={() => transition.current?.kill()}
       enablePan={false}
       enableZoom={false}
       minAzimuthAngle={0.18}

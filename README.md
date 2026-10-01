@@ -18,6 +18,7 @@ npm run typecheck    # Latest native TypeScript compiler
 npm run lint
 npm run format:check
 npm run test:e2e     # Desktop and mobile Chromium tests
+npm run test:timer   # Timer compatibility regression test
 ```
 
 Install a browser once for tests if needed: `npx playwright install chromium`. The test configuration starts the dev server automatically or uses an existing server on port 3000.
@@ -29,6 +30,8 @@ Next.js App Router, React, TypeScript, Tailwind CSS, Three.js, React Three Fiber
 The latest TypeScript 7 compiler runs through the `@typescript/native` npm alias. Next.js tooling and typescript-eslint still require the TypeScript 6 programmatic API, provided through Microsoft’s compatibility package aliased as `typescript`. This follows [Microsoft’s side-by-side guidance](https://devblogs.microsoft.com/typescript/announcing-typescript-7-0/#running-side-by-side-with-typescript-6.0). ESLint uses the latest 9.x release compatible with Next.js’s React, import, and accessibility plugins.
 
 Fonts are bundled locally; building does not require Google Fonts or a remote asset service.
+
+Stable React Three Fiber 9.8.1 still constructs the deprecated `THREE.Clock`. The checked-in `patches/@react-three+fiber+9.8.1.patch` replaces that internal clock with a `THREE.Timer` adapter, preserving frame deltas, pause/resume, and manual frame advancement. `npm install` applies it automatically through `patch-package`; installation fails if the patch cannot apply. Review and remove the patch when upgrading to a stable Fiber release with native Timer support. Shadows explicitly use the supported `PCFShadowMap` setting.
 
 ## Architecture
 
@@ -50,7 +53,9 @@ lib/room-config.ts           Model URLs, sections, camera targets
 lib/types.ts                 Shared content and scene types
 store/room-store.ts          Navigation, theme, motion, and view state
 public/models/              Original optimized room models
+public/projects/            Supplied project banners
 public/resume/              The original supplied résumé PDF
+patches/                    Stable React Three Fiber Timer compatibility
 scripts/                    Asset generation, preview capture, accessibility audit
 tests/                      Playwright interaction and fallback tests
 ```
@@ -65,7 +70,7 @@ Update **`content/portfolio.ts`**. The 3D scene does not contain résumé copy o
 - Replace `public/resume/M-Bilal-Khan-Resume.pdf` when the résumé changes.
 - Work and education dates reflect the supplied résumé and should be updated as the career progresses.
 
-The supplied asset folder contained a résumé, but no project screenshots or room models. Included project illustrations are explicitly labeled **PROJECT CONCEPT**, and repository links come from the résumé. No live project URLs have been invented.
+EcoStudent, SecureShare, and NexaPlan use the supplied banners in `public/projects/` in both the room panel and classic view. Next.js optimizes the images for each viewport; their complete aspect ratio is preserved. The concept illustration is only a fallback for future projects without an `image`. Repository links come from the résumé; no live project URLs have been invented.
 
 The contact form composes a `mailto:` draft in the visitor’s email application. It does not send or store messages on a backend. Email, telephone, and social links also work directly.
 
@@ -82,6 +87,8 @@ The contact form composes a `mailto:` draft in the visitor’s email application
 | Social objects | GitHub and LinkedIn profiles | — |
 
 Drag to orbit within the room’s viewing bounds. Select an object, its HTML marker, or a navigation button to focus it. **Escape** or **Back to the room** closes the panel; **0** resets the camera. The sun button changes lighting. The help button explains the controls.
+
+Information panels are nonmodal: the room stays interactive, clicking its background keeps the information visible, and selecting another object switches the panel directly. The camera gently adjusts while keeping the room in view; dragging takes control immediately. On phones, the room and information share the screen vertically.
 
 ## Replace or regenerate the models
 
@@ -104,7 +111,7 @@ For future photographic textures, prefer WebP/AVIF or KTX2, small texture dimens
 ## Accessibility and performance
 
 - Full HTML content is rendered on the server; the classic view works without WebGL or JavaScript.
-- Native dialogs provide focus containment, Escape handling, and focus restoration.
+- Nonmodal section dialogs preserve room interaction, Escape handling, and focus restoration. The separate room guide uses a modal dialog with focus containment.
 - Every section has keyboard-accessible HTML navigation and labeled controls.
 - Reduced-motion preferences disable cinematic movement and CSS animations.
 - The scene loads in a separate client chunk and renders on demand; GSAP and orbit controls request frames during movement.

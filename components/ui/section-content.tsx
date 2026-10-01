@@ -34,7 +34,7 @@ export function ProjectCard({ project }: { project: Project }) {
         <div className="project-screenshot">
           <Image
             src={project.image}
-            alt={`${project.title} application screenshot`}
+            alt={`${project.title} project banner`}
             fill
             sizes="(max-width: 700px) 90vw, 450px"
           />

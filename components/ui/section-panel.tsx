@@ -26,12 +26,12 @@ export function SectionPanel() {
   const index = sections.findIndex((item) => item.id === section);
 
   useEffect(() => {
-    if (section && dialog.current && !dialog.current.open) {
-      returnFocus.current =
-        document.activeElement instanceof HTMLElement
-          ? document.activeElement
-          : null;
-      dialog.current.showModal();
+    if (section && dialog.current) {
+      const trigger = document.activeElement;
+      if (trigger instanceof HTMLElement && !dialog.current.contains(trigger)) {
+        returnFocus.current = trigger;
+      }
+      if (!dialog.current.open) dialog.current.show();
     } else if (!section && dialog.current?.open) {
       dialog.current.close();
       returnFocus.current?.focus();
@@ -41,17 +41,23 @@ export function SectionPanel() {
 
   useEffect(() => {
     if (!section) return;
-    const previous = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.body.style.overflow = previous;
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key !== "Escape" || document.querySelector("dialog:modal"))
+        return;
+      event.preventDefault();
+      close();
     };
-  }, [section]);
+    window.addEventListener("keydown", onKeyDown);
+    return () => {
+      window.removeEventListener("keydown", onKeyDown);
+    };
+  }, [close, section]);
 
   return (
     <dialog
       ref={dialog}
       className="section-panel"
+      aria-modal="false"
       aria-labelledby="panel-title"
       aria-describedby="panel-description"
       onCancel={(event) => {
@@ -59,18 +65,6 @@ export function SectionPanel() {
         close();
       }}
       onClose={close}
-      onClick={(event) => {
-        if (event.target === event.currentTarget) {
-          const rect = event.currentTarget.getBoundingClientRect();
-          if (
-            event.clientX < rect.left ||
-            event.clientX > rect.right ||
-            event.clientY < rect.top ||
-            event.clientY > rect.bottom
-          )
-            close();
-        }
-      }}
     >
       {section && (
         <>
@@ -99,7 +93,9 @@ export function SectionPanel() {
                 <SectionIcon section={section} size={15} />{" "}
                 {sections[index].label} <span>0{index + 1}</span>
               </span>
-              <h2 id="panel-title">{titles[section]}</h2>
+              <h2 id="panel-title" aria-live="polite">
+                {titles[section]}
+              </h2>
               <p id="panel-description" className="sr-only">
                 {sections[index].description}
               </p>

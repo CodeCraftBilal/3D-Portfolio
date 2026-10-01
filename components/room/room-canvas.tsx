@@ -3,7 +3,7 @@
 import { Component, useEffect, type ReactNode } from "react";
 import { Canvas, useThree } from "@react-three/fiber";
 import { ContactShadows, useProgress } from "@react-three/drei";
-import { ACESFilmicToneMapping } from "three";
+import { ACESFilmicToneMapping, PCFShadowMap } from "three";
 import { RoomGeometry } from "./room-geometry";
 import { CameraRig } from "./camera-rig";
 import { RoomHotspots } from "./room-hotspots";
@@ -141,7 +141,7 @@ export default function RoomCanvas() {
         style={{ cursor: hovered ? "pointer" : "grab" }}
       >
         <Canvas
-          shadows
+          shadows={{ type: PCFShadowMap }}
           frameloop="demand"
           dpr={[1, 1.5]}
           camera={{ position: overview.position, fov: 32, near: 0.1, far: 70 }}
