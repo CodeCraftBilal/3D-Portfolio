@@ -2,6 +2,10 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import dynamic from "next/dynamic";
+
+const PdfViewer = dynamic(() => import("./pdf-viewer"), { ssr: false });
+
 import {
   ArrowDownToLine,
   ArrowUpRight,
@@ -243,29 +247,7 @@ function ResumeContent() {
     <div className="resume-content">
       <p className="lead-copy">The full picture, in two pages.</p>
       <div className="resume-preview">
-        <div className="resume-paper">
-          <span className="eyebrow">DEVELOPER · BUILDER · PROBLEM SOLVER</span>
-          <h3>M. BILAL KHAN</h3>
-          <p>React Native Developer</p>
-          <span className="resume-rule" />
-          <span className="eyebrow">EXPERIENCE</span>
-          <strong>Viberacy Tech</strong>
-          <span>React Native Developer · Jul 2026 — Present</span>
-          <div className="resume-lines">
-            <i />
-            <i />
-            <i />
-          </div>
-          <span className="eyebrow">EDUCATION</span>
-          <strong>University of Mianwali</strong>
-          <span>BS Computer Science · 2022 — 2026</span>
-          <div className="resume-lines">
-            <i />
-            <i />
-          </div>
-          <span className="eyebrow">SELECTED WORK</span>
-          <span>EcoStudent · SecureShare · NexaPlan</span>
-        </div>
+        <PdfViewer file="/resume/M-Bilal-Khan-Resume.pdf" />
         <span className="resume-file-label">
           M-Bilal-Khan-Resume.pdf <span>PDF</span>
         </span>
