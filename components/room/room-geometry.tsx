@@ -244,7 +244,7 @@ export function RoomGeometry() {
           />
         </RoomAsset>
       </group>
-      <group position={[-2.03, 0.075, 1.38]}>
+      <group position={[-2.03, 0.075, 2.0]}>
         <RoomAsset id="plant">
           <Box
             size={[0.45, 1.4, 0.45]}
