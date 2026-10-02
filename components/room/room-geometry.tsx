@@ -179,7 +179,7 @@ export function RoomGeometry() {
         label="My projects"
         position={[-1.6, 1.61, -0.94]}
         rotation={[0, 0.2, 0]}
-        labelPosition={[-0.35, 0.67, 0.14]}
+        labelPosition={[-0.14, 0.88, 0.14]}
       >
         <RoomAsset id="laptop">
           <Box
@@ -213,8 +213,8 @@ export function RoomGeometry() {
         section="resume"
         label="Résumé"
         position={[0.52, 1.61, -0.8]}
-        rotation={[0, -0.18, 0]}
-        labelPosition={[0.04, 0.19, 0.06]}
+        rotation={[0, 0.18, 0]}
+        labelPosition={[-0.14, 0.39, 0.06]}
       >
         <RoomAsset id="resume">
           <Box size={[0.4, 0.025, 0.55]} position={[0, 0, 0]} color="#eeeade" />
@@ -223,9 +223,9 @@ export function RoomGeometry() {
       <InteractiveObject
         section="contact"
         label="Say hello"
-        position={[1.0, 1.62, -1.37]}
-        rotation={[0, -0.16, 0]}
-        labelPosition={[0.12, 0.33, 0.05]}
+        position={[1.0, 1.62, -1.0]}
+        rotation={[0.5, -0.16, 0]}
+        labelPosition={[0.12, .50, 0.05]}
       >
         <RoomAsset id="phone">
           <Box
@@ -258,12 +258,12 @@ export function RoomGeometry() {
           <Box size={[0.4, 1, 0.4]} position={[0, 0.5, 0]} color="#708756" />
         </RoomAsset>
       </group>
-      <group position={[-2.06, 1.62, -1.6]}>
+      <group position={[0.6, 1.62, -1.6]} rotation={[0, -1.4, 0]}>
         <RoomAsset id="lamp">
           <Box size={[0.2, 0.8, 0.2]} position={[0, 0.4, 0]} color="#ddd0aa" />
         </RoomAsset>
       </group>
-      <group position={[-0.44, 1.6, -0.75]}>
+      <group position={[-0.44, 1.6, -0.65]}>
         <RoomAsset id="accessories">
           <Box
             size={[0.87, 0.03, 0.3]}

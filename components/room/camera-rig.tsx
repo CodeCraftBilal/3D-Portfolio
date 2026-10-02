@@ -23,7 +23,7 @@ export function CameraRig() {
     if (!orbit) return;
     // A gentle focus preserves the rest of the room as a usable navigation surface.
     const focus = section ? cameraViews[section] : overview;
-    const blend = section ? 0.16 : 0;
+    const blend = section ? 0.7 : 0;
     const view = {
       position: overview.position.map(
         (value, i) => value + (focus.position[i] - value) * blend,

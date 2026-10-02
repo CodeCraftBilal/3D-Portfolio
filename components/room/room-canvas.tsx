@@ -6,6 +6,7 @@ import { ContactShadows, useProgress } from "@react-three/drei";
 import { ACESFilmicToneMapping, PCFShadowMap } from "three";
 import { RoomGeometry } from "./room-geometry";
 import { CameraRig } from "./camera-rig";
+import { CursorParallax } from "./cursor-parallax";
 import { RoomHotspots } from "./room-hotspots";
 import { useRoomStore } from "@/store/room-store";
 import { overview } from "@/lib/room-config";
@@ -156,19 +157,21 @@ export default function RoomCanvas() {
           aria-label="Interactive 3D developer room. Use the navigation below to explore each section with a keyboard."
         >
           <Lights />
-          <RoomGeometry />
+          <CursorParallax>
+            <RoomGeometry />
+            <ContactShadows
+              position={[0, -0.245, 0]}
+              opacity={0.3}
+              scale={17}
+              blur={2.7}
+              far={5}
+              resolution={256}
+              frames={1}
+              color="#75624d"
+            />
+          </CursorParallax>
           <CameraRig />
           <SceneLifecycle />
-          <ContactShadows
-            position={[0, -0.245, 0]}
-            opacity={0.3}
-            scale={17}
-            blur={2.7}
-            far={5}
-            resolution={256}
-            frames={1}
-            color="#75624d"
-          />
         </Canvas>
         <RoomHotspots />
         <RoomLoading />
