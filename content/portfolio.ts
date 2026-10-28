@@ -3,20 +3,20 @@ import type { Project } from "@/lib/types";
 // Content is transcribed or summarized from public/resume/M-Bilal-Khan-Resume.pdf.
 // Add screenshots and live URLs here when available; no room code needs to change.
 export const profile = {
-  name: "M. Bilal Khan",
+  name: "Muhammad Bilal Khan",
   shortName: "Bilal",
   initials: "BK",
   role: "Full Stack Developer",
   location: "Mianwali, Pakistan",
   timezone: "Asia/Karachi",
-  email: "bilalkhan751150@gmail.com",
-  phone: "+923287925879",
+  email: process.env.EMAIL,
+  phone: process.env.PHONE,
   github: "https://github.com/CodeCraftBilal",
   linkedin: "https://www.linkedin.com/in/bilalkhan75/",
   resume: "/resume/M-Bilal-Khan-Resume.pdf",
   website: "https://bilalkhan.online",
   educationStatus: "Computer Science student",
-  cgpa: "3.31",
+  cgpa: "3.32",
   cgpaScale: "4.0",
   intro:
     "I build thoughtful web and mobile experiences. Come on in, explore my workspace, and get to know the developer behind the screen.",
@@ -74,7 +74,7 @@ export const projects: Project[] = [
     ],
     color: "blue",
     image: "/projects/SecureShare.jpg",
-     liveUrl: "https://secureshare.bilalkhan.online",
+    liveUrl: "https://secureshare.bilalkhan.online",
     sourceUrl: "https://github.com/CodeCraftBilal/info-security-project",
   },
   {
